@@ -1,7 +1,20 @@
+using MovieMiddleware.Middleware;
+using Serilog;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Information()
+    .WriteTo.Console()
+    .WriteTo.File(
+        path: "Logs/log-.json",
+        rollingInterval: RollingInterval.Day,
+        formatter: new Serilog.Formatting.Json.JsonFormatter()
+    )
+    .CreateLogger();
 
+builder.Host.UseSerilog();
+// Add services to the container.
 builder.Services.AddControllers();
 
 // Add Swagger
@@ -10,13 +23,20 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+// Test log
+Log.Information("Application started successfully!");
+
 // Enable Swagger only in Development
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-// Configure the HTTP request pipeline.
+
+// Configure the  HTTP request pipeline.
+
+// Global Exception Handling Middleware
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseHttpsRedirection();
 
