@@ -34,7 +34,8 @@ namespace MovieMiddleware.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            return Ok(model);
+            // Simulate movie purchase
+            return Ok(new { Message = "Movie purchased successfully", Purchase = model });
         }
     }
 }
