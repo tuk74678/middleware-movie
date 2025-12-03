@@ -27,5 +27,14 @@ namespace MovieMiddleware.Controllers
         {
             return Ok(model);
         }
+        
+        [HttpPost("PurchaseMovie")]
+        public IActionResult PurchaseMovie([FromBody] PurchaseMovieModel model)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            return Ok(model);
+        }
     }
 }
