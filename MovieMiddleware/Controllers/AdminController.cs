@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MovieMiddleware.Filters;
+using MovieMiddleware.Models;
 
 namespace MovieMiddleware.Controllers
 {
@@ -12,10 +14,18 @@ namespace MovieMiddleware.Controllers
         {
             return Ok(new[] { "Inception", "Matrix" });
         }
+        
         [HttpGet("throw")]
         public IActionResult ThrowException()
         {
             throw new Exception("Test exception!");
+        }
+        
+        [HttpPost("CreateMovie")]
+        [ServiceFilter(typeof(LogFilter))]
+        public IActionResult CreateMovie([FromBody] MovieModel model)
+        {
+            return Ok(model);
         }
     }
 }

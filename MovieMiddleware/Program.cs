@@ -1,3 +1,4 @@
+using MovieMiddleware.Filters;
 using MovieMiddleware.Middleware;
 using Serilog;
 
@@ -14,8 +15,10 @@ Log.Logger = new LoggerConfiguration()
     .CreateLogger();
 
 builder.Host.UseSerilog();
+
 // Add services to the container.
 builder.Services.AddControllers();
+builder.Services.AddScoped<LogFilter>();
 
 // Add Swagger
 builder.Services.AddEndpointsApiExplorer();
